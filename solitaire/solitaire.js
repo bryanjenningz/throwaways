@@ -7,7 +7,7 @@
 
     suits.forEach(function(suit) {
       values.forEach(function(value) {
-        cards.push({value: value, suit: suit});
+        cards.push({value: value, suit: suit, up: true, pile: 0, fromBotton: null});
       });
     });
 
@@ -36,21 +36,30 @@
   var model = {
     init: function() {
       this.cards = shuffle(makeDeck());
-    },
-    newGame: function() {
-      this.cards = shuffle(this.cards);
     }
   };
 
-  var view = {
+  var cardView = {
     init: function() {
-      this.template = document.querySelector('#cardTemplate').innerHtml;
+      this.element = document.querySelector('#game');
+      this.template = document.querySelector('#cardTemplate').textContent;
     },
     render: function(card) {
-      this.template.replace(/{{([^\}]+)}})/g, function(entire, found) {
-        console.log(entire);
-        console.log(found);
+      console.log(this.template);
+      this.element.textContent = this.template.replace(/{{([^\}]+)}}/g, function(entire, found) {
         return card[found];
+      });
+    }
+  };
+
+  var gameView = {
+    init: function() {
+      this.element = document.querySelector('#game');
+      this.template = document.querySelector('#gameTemplate').textContent;
+    },
+    render: function(cards) {
+      cards.forEach(function(card, i, deck) {
+        cardView.render(card);
       });
     }
   };
@@ -58,10 +67,11 @@
   var controller = {
     init: function() {
       model.init();
-      view.render(model.cards);
+      cardView.init();
+      cardView.render(model.cards);
     },
     render: function() {
-      view.render(model.cards);
+      cardView.render(model.cards);
     }
   };
 
