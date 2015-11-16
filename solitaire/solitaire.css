@@ -1,0 +1,9 @@
+* {
+  box-sizing: border-box;
+}
+body, #game {
+  background: #0D8015;
+}
+img {
+  display: none;
+}
