@@ -1,18 +1,47 @@
 (function() {
+  var values = ['a', '2', '3', '4', '5', '6', '7', '8', '9', 
+                '10', 'j', 'q', 'k'];
+  var suits = ['clubs', 'hearts', 'spades', 'diamonds'];
+  var screen = document.getElementById('game');
+  var context = screen.getContext('2d');
+
   var makeDeck = function() {
     var suits = ['spades', 'diamonds', 'hearts', 'clubs'];
-    var values = ['2', '3', '4', '5', '6', '7', '8', '9', 
-                  '10', 'jack', 'queen', 'king', 'ace'];
+    var values = ['a', '2', '3', '4', '5', '6', '7', '8', '9', 
+                  '10', 'j', 'q', 'k'];
     var cards = [];
 
     suits.forEach(function(suit) {
       values.forEach(function(value) {
-        cards.push({value: value, suit: suit, up: true, pile: 0, fromBotton: null});
+        cards.push({value: value, suit: suit, faceDown: false});
       });
     });
 
     return cards;
   };
+
+  var drawCard = (function() {
+    var image = document.getElementById('cardsImage');
+    var backImage = document.getElementById('cardBackImage');
+
+    var srcWidth = 73;
+    var srcHeight = 99;
+    var scalar = .4;
+    var cardWidth = srcWidth * scalar;
+    var cardHeight = srcHeight * scalar;
+
+    return function(context, card) {
+      if (!card.faceDown) {
+        var srcX = values.indexOf(String(card.value)) * srcWidth;
+        var srcY = suits.indexOf(String(card.suit)) * srcHeight;
+        context.drawImage(image, srcX, srcY, srcWidth, srcHeight, 
+                                 0, 0, cardWidth, cardHeight);
+      } else {
+        context.drawImage(backImage, 50, 50, 400, 600,
+                                     0, 0, cardWidth, cardHeight);
+      }
+    };
+  })();
 
   var shuffle = function(cards) {
     var swap = function(array, i, j) {
@@ -33,47 +62,7 @@
     return cards;
   };
 
-  var model = {
-    init: function() {
-      this.cards = shuffle(makeDeck());
-    }
-  };
+  $(screen).height($(window).height() - 10);
+  drawCard(context, {suit: 'hearts', value: 'k', 'faceDown': false});
 
-  var cardView = {
-    init: function() {
-      this.element = document.querySelector('#game');
-      this.template = document.querySelector('#cardTemplate').textContent;
-    },
-    render: function(card) {
-      console.log(this.template);
-      this.element.textContent = this.template.replace(/{{([^\}]+)}}/g, function(entire, found) {
-        return card[found];
-      });
-    }
-  };
-
-  var gameView = {
-    init: function() {
-      this.element = document.querySelector('#game');
-      this.template = document.querySelector('#gameTemplate').textContent;
-    },
-    render: function(cards) {
-      cards.forEach(function(card, i, deck) {
-        cardView.render(card);
-      });
-    }
-  };
-
-  var controller = {
-    init: function() {
-      model.init();
-      cardView.init();
-      cardView.render(model.cards);
-    },
-    render: function() {
-      cardView.render(model.cards);
-    }
-  };
-
-  controller.init();
 })();
