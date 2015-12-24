@@ -52,7 +52,7 @@ var todos = (function() {
   // bind events
   $addTodoForm.on('submit', addTodo);
   $ul.delegate('li', 'click', toggleTodoStatus);
-  $('body').on('filterSelected', render.bind(null, filterList.state.filter))
+  $('body').on('filterSelected', render)
 
   function render() {
     var data = {todos: filterTodos(filterList.state.filter)};
