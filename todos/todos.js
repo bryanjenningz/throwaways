@@ -1,6 +1,6 @@
 var filterList = (function() {
   // data
-  var state = 'all';
+  var state = {filter: 'all'};
   var filterChoices = [
     {text: 'All', type: 'all', selected: true},
     {text: 'Active', type: 'active', selected: false},
@@ -25,7 +25,7 @@ var filterList = (function() {
     selected.selected = true;
     var unselected = filterChoices.filter(function(choice) { return choice.type !== selectedType; });
     unselected.forEach(function(choice) { choice.selected = false; });
-    state = selectedType;
+    state.filter = selectedType;
     render();
     $el.trigger('filterSelected', {filter: selectedType});
   }
@@ -52,15 +52,10 @@ var todos = (function() {
   // bind events
   $addTodoForm.on('submit', addTodo);
   $ul.delegate('li', 'click', toggleTodoStatus);
-  $('body').on('filterSelected', render)
+  $('body').on('filterSelected', render.bind(null, filterList.state.filter))
 
-  function render(event, payload) {
-    var data;
-    if (payload && payload.type) {
-      data = filterTodos(payload.type);
-    } else {
-      data = {todos: todos}
-    }
+  function render() {
+    var data = {todos: filterTodos(filterList.state.filter)};
     $ul.html(template(data));
   }
 
@@ -77,7 +72,7 @@ var todos = (function() {
     var todo = {id: nextId++, text: text, completed: false};
     todos.push(todo);
     $input.val('');
-    render(filterList.state);
+    render(filterList.state.filter);
   }
 
   function filterTodos(type) {
@@ -92,7 +87,7 @@ var todos = (function() {
     var toggledId = $(this).data('id');
     var todo = todos.filter(function(todo) { return todo.id === toggledId; })[0];
     todo.completed = !todo.completed;
-    render();
+    render(filterList.state.filter);
   }
 
   render();
