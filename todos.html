@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+<head>
+  <title>Todo List</title>
+  <link rel="stylesheet" href="todos.css">
+</head>
+<body>
+  <div class="filter-list">
+    <script id="filter-list-template" type="text/x-handlebars-template">
+      {{#each filterChoices}}
+        <span class="filter-choice{{#if selected}} selected{{/if}}" data-type="{{type}}">{{text}}</span>
+      {{/each}}
+    </script>
+  </div>
+  <div class="todos">
+    <form><input autofocus><button type="submit">Add</button></form>
+    <ul>
+      <script id="todos-template" type="text/x-handlebars-template">
+        {{#each todos}}
+          <li class="todo{{#if completed}} completed{{/if}}" data-id="{{id}}">{{text}}</li>
+        {{/each}}
+      </script>
+    </ul>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js"></script>
+
+  <script src="todos.js"></script>
+</body>
+</html>
