@@ -1,0 +1,94 @@
+<!doctype html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css">
+</head>
+<body>
+  <div id="saved-words">
+    <h2>Saved words</h2>
+    <ul></ul>
+  </div>
+  <div id="word-container" class="save-select">
+    <textarea></textarea>
+  </div>
+  <div id="word-container2" class="save-select">
+    <textarea></textarea>
+  </div>
+
+
+  <div class="side-menu" id="sideMenu">
+    <menu>
+      <ul class="nav nav-tabs nav-stacked">
+        <li><a href="#myModal" data-backdrop="false" data-toggle="modal">Click Me</a>
+          </li>
+      </ul>
+    </menu>
+  </div>
+  <div id="myModal" class="modal fade">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title">Settings</h4>
+        </div>
+        <div class="modal-body">
+          <p>Settings</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div><!-- .modal-content -->
+    </div><!-- .modal-dialog -->
+  </div><!-- .modal -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  <script>
+    var words = loadSave() || [];
+    if (words.length > 0) {
+      words.forEach(function(word) {
+        $('#saved-words').append($('<ul>' + word + '</ul>'));
+      });
+    }
+
+    $('.save-select').mousedown(saveSelection);
+
+    function saveSelection(e) {
+      var startNode = e.target.parentNode;
+      if (getSelection().toString().length === 0) {
+        var alreadyHandled = false;
+        $(document).mouseup(function(e) {
+          e.stopPropagation();
+          if (!alreadyHandled) {
+            alreadyHandled = true;
+            var word = getSelection().toString();
+            var endNode = getSelection().extentNode;
+            if (word.length > 0 && startNode === endNode) {
+              words.push(word);
+              $('#saved-words').append($('<ul>' + word + '</ul>'));
+            }
+          }
+        });
+      } else {
+        // Assumption: the only mouseup event is the one above
+        $(document).off('mouseup');
+      }
+    }
+
+    function loadSave(words) {
+      if (arguments.length === 0) {
+        return JSON.parse(localStorage.getItem('words'));
+      } else {
+        localStorage.setItem('words', JSON.stringify(words));
+      }
+    }
+
+    $('#myModal').draggable({
+      handle: '.modal-header'
+    });
+
+  </script>
+</body>
+</html>
