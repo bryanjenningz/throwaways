@@ -1,0 +1,45 @@
+#todos-app {
+  margin: auto;
+  width: 400px;
+  background: gray;
+}
+#todos-app #new-todo {
+  width: 100%;
+  height: 35px;
+  padding: 6px;
+}
+#todos-list {
+  margin: 0;
+  padding: 0;
+}
+.todo {
+  list-style: none;
+  height: 35px;
+  padding: 7px;
+}
+.todo .edit {
+  display: none;
+}
+.todo.editing .edit {
+  display: block;
+}
+.todo.editing .info {
+  display: none;
+}
+.todo .completed {
+  text-decoration: line-through;
+}
+.todo:nth-child(odd) {
+  background-color: #ddd;
+}
+.todo:nth-child(even) {
+  background-color: #bbb;
+}
+.todo .destroy {
+  float: right;
+  margin-right: 5px;
+  cursor: pointer;
+}
+.todo .toggle {
+  cursor: pointer;
+}
