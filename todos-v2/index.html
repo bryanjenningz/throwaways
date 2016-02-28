@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+<head>
+  <title>Todos</title>
+  <link rel="stylesheet" href="base.css">
+  <link rel="stylesheet" href="todos.css">
+</head>
+<body>
+  <div id="todos-app">
+    <h3 class="text-center">Todo List</h3>
+    <input id="new-todo" placeholder="What needs to be done?" autofocus>
+    <ul id="todos-list"></ul>
+  </div>
+  <script id="todo-template" type="text/x-handlebars-template">
+    {{#this}}
+      <li class="todo" data-id="{{id}}">
+        <span class="info">
+          <span class="toggle">{{#if completed }}:){{else}}:({{/if}}</span>
+          <span {{#if completed }}class="completed"{{/if}}>{{text}}</span>
+          <span class="destroy">X</span>
+        </span>
+        <input class="edit" value="{{text}}">
+      </li>
+    {{/this}}
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js"></script>
+  <script src="todos.js"></script>
+</body>
+</html>
