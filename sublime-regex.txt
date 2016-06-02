@@ -1,0 +1,4 @@
+CSS to JavaScript-style CSS
+^(\s*)([\w-]+)\s*:\s*([\w#%]+);\s*$
+$1'$2': '$3',
+
